@@ -30,7 +30,7 @@ public class Game extends JFrame implements Runnable {
     private final int GAP = SCALE / 10; // Space in between cells
     private final int STEP = SCALE + GAP;  // Used to estimate cell pixel locations.
 
-    private final long MS_PER_FRAME = 1000/60;
+    private final long MS_PER_FRAME = 1000 / 60;
 
     private Cell[][] grid;
 
@@ -269,16 +269,20 @@ public class Game extends JFrame implements Runnable {
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_A:
-                    activePiece.translatePiece(-1,0);
+                case KeyEvent.VK_LEFT:
+                    activePiece.translatePiece(-1, 0);
                     break;
                 case KeyEvent.VK_D:
-                    activePiece.translatePiece(1,0);
+                case KeyEvent.VK_RIGHT:
+                    activePiece.translatePiece(1, 0);
                     break;
                 case KeyEvent.VK_W:
-                    activePiece.translatePiece(0,-1);
+                case KeyEvent.VK_UP:
+                    activePiece.translatePiece(0, -1);
                     break;
                 case KeyEvent.VK_S:
-                    activePiece.translatePiece(0,1);
+                case KeyEvent.VK_DOWN:
+                    activePiece.translatePiece(0, 1);
                     break;
                 default:
                     activePiece.translatePiece(1, 1);
