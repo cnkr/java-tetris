@@ -36,5 +36,11 @@ public class GridContext {
         piece = new Piece(this);
     }
 
-
+    void clearGrid(){
+        for(Slot[] row : grid){
+            for(Slot slot : row){
+                slot.purge();
+            }
+        }
+    }
 }

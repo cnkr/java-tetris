@@ -35,6 +35,11 @@ class GridCanvas extends JPanel {
 
                 g.setColor(Color.WHITE);
                 g.drawRect(j * cx.STEP, (i - cx.HIDDEN_ROWS) * cx.STEP, cx.SCALE, cx.SCALE);
+
+                if (cx.grid[i][j].solid){
+                    g.setColor(Color.BLACK);
+                    g.drawRect(j * cx.STEP, (i - cx.HIDDEN_ROWS) * cx.STEP, cx.SCALE, cx.SCALE);
+                }
             }
         }
     }

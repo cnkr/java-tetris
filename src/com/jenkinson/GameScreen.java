@@ -15,12 +15,23 @@ class GameScreen extends Screen {
     GameScreen() {
 
         gameGridContext = new GridContext(this, 26, 10, 4, 40, 10);
-        cueGridContext = new GridContext(this,4,3,0,40,10);
+        cueGridContext = new GridContext(this,5,5,0,40,10);
 
         gameCanvas = new GridCanvas(this, gameGridContext);
         cueCanvas = new GridCanvas(this, cueGridContext);
 
         add(gameCanvas);
         add(cueCanvas);
+    }
+
+    Piece updatePieces(){
+
+        gameGridContext.piece = cueGridContext.piece;
+        gameGridContext.piece.cx = gameGridContext;
+
+        cueGridContext.clearGrid();
+        cueGridContext.piece = new Piece(cueGridContext);
+
+        return gameGridContext.piece;
     }
 }
