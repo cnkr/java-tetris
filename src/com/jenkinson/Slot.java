@@ -11,7 +11,7 @@ class Slot {
     final int i;
     final int j;
 
-    static Color voidColor = Color.LIGHT_GRAY;
+    private static Color voidColor = Color.LIGHT_GRAY;
     Color color = Color.LIGHT_GRAY;
 
     boolean solid = false;
@@ -21,5 +21,14 @@ class Slot {
         this.j = j;
     }
 
+    void fill(Color color){
+        this.solid = true;
+        this.color = color;
+    }
+
+    void purge(){
+        this.solid = false;
+        this.color = voidColor;
+    }
 
 }

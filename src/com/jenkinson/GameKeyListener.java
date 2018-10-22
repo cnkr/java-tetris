@@ -1,7 +1,5 @@
 package com.jenkinson;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 public class GameKeyListener implements KeyListener {
@@ -38,7 +36,7 @@ public class GameKeyListener implements KeyListener {
     public void keyPressed(KeyEvent e) {
         System.out.println(e.getKeyChar());
 
-        Piece activePiece = screen.activePiece;
+        Piece activePiece = screen.gameGridContext.piece;
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:

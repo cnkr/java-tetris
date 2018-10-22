@@ -7,7 +7,7 @@ public class TetrisWindow extends JFrame {
      * Application Window
      */
 
-    Screen activeScreen;
+    private Screen activeScreen;
 
     public static void main(String[] args) {
         TetrisWindow game = new TetrisWindow();

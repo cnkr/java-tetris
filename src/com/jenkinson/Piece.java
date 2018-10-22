@@ -12,24 +12,28 @@ class Piece {
         I, J, L, O, S, T, Z
     }
 
+    class Block {
+        int i;
+        int j;
+
+        Block(int i, int j) {
+            this.i = i;
+            this.j = j;
+        }
+    }
+
     PieceType kind;
     Block[] blocks = new Block[4];
     Color color;
 
-    GameScreen screen;
-    Slot[][] blockGrid;
+    GridContext cx;
 
-    Piece(GameScreen screen, boolean activePiece) {
-        this.screen = screen;
+    Piece(GridContext cx) {
+
+        this.cx = cx;
         Random r = new Random();
         this.kind = PieceType.values()[r.nextInt(PieceType.values().length)];
         this.kind = PieceType.I;  //TODO Remove
-
-        if (activePiece) {
-            blockGrid = screen.grid;
-        } else {
-            //TODO
-        }
 
         switch (this.kind) {
             case I:
@@ -42,35 +46,46 @@ class Piece {
         }
 
         for (Block block : blocks) {
-            Slot slot = blockGrid[block.i][block.j];
-            slot.solid = true;
-            slot.color = color;
+            Slot slot = cx.grid[block.i][block.j];
+            slot.fill(color);
         }
     }
 
     void translate(int iOffset, int jOffset) {
-        for (Block b : blocks) {
-            blockGrid[b.i][b.j].solid = false;
-            blockGrid[b.i][b.j].color = Slot.voidColor;
-        }
-        for (Block b : blocks) {
-            b.i += iOffset;
-            b.j += jOffset;
-        }
-        for (Block b : blocks) {
-            blockGrid[b.i][b.j].solid = true;
-            blockGrid[b.i][b.j].color = color;
-        }
-    }
 
-    class Block {
+        // First, check if target slots are available
+        boolean slotsAvailable = true;
 
-        int i;
-        int j;
+        // Empty current slots
+        for (Block b : blocks) {
+            cx.grid[b.i][b.j].purge();
+        }
 
-        Block(int i, int j) {
-            this.i = i;
-            this.j = j;
+        // Check new slots
+        for (Block b : blocks) {
+            try {
+                if (cx.grid[b.i + iOffset][b.j + jOffset].solid) {
+                    slotsAvailable = false;
+                    break;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                slotsAvailable = false;
+            }
+        }
+
+        // If problem detected, undo. Else, proceed.
+        if (!slotsAvailable) {
+            for (Block b : blocks) {
+                cx.grid[b.i][b.j].fill(color);
+            }
+        } else {
+            for (Block b : blocks) {
+                b.i += iOffset;
+                b.j += jOffset;
+            }
+            for (Block b : blocks) {
+                cx.grid[b.i][b.j].fill(color);
+            }
         }
     }
 }
