@@ -55,6 +55,9 @@ public class GameKeyListener implements KeyListener {
             case KeyEvent.VK_DOWN:
                 activePiece.translate(1,0);
                 break;
+            case KeyEvent.VK_ENTER:
+                activePiece = screen.gameGridContext.piece = new Piece(screen.gameGridContext);
+
         }
 
         screen.repaint();

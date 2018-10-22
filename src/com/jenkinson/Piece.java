@@ -33,7 +33,7 @@ class Piece {
         this.cx = cx;
         Random r = new Random();
         this.kind = PieceType.values()[r.nextInt(PieceType.values().length)];
-        this.kind = PieceType.I;  //TODO Remove
+        //this.kind = PieceType.I;  //TODO Remove
 
         switch (this.kind) {
             case I:
@@ -43,6 +43,49 @@ class Piece {
                 blocks[3] = new Block(3, 0);
                 this.color = Color.BLUE;
                 break;
+            case J:
+                blocks[0] = new Block(1, 1);
+                blocks[1] = new Block(2, 1);
+                blocks[2] = new Block(3, 1);
+                blocks[3] = new Block(3, 0);
+                this.color = Color.PINK;
+                break;
+            case L:
+                blocks[0] = new Block(1, 0);
+                blocks[1] = new Block(2, 0);
+                blocks[2] = new Block(3, 0);
+                blocks[3] = new Block(3, 1);
+                this.color = Color.GREEN;
+                break;
+            case O:
+                blocks[0] = new Block(2, 0);
+                blocks[1] = new Block(2, 1);
+                blocks[2] = new Block(3, 1);
+                blocks[3] = new Block(3, 0);
+                this.color = Color.YELLOW;
+                break;
+            case S:
+                blocks[0] = new Block(1, 0);
+                blocks[1] = new Block(2, 0);
+                blocks[2] = new Block(2, 1);
+                blocks[3] = new Block(3, 1);
+                this.color = Color.CYAN;
+                break;
+            case T:
+                blocks[0] = new Block(2, 0);
+                blocks[1] = new Block(2, 1);
+                blocks[2] = new Block(2, 2);
+                blocks[3] = new Block(3, 1);
+                this.color = Color.ORANGE;
+                break;
+            case Z:
+                blocks[0] = new Block(1, 1);
+                blocks[1] = new Block(2, 1);
+                blocks[2] = new Block(2, 0);
+                blocks[3] = new Block(3, 0);
+                this.color = Color.RED;
+                break;
+
         }
 
         for (Block block : blocks) {
