@@ -107,8 +107,6 @@ public class GridContext {
             }
 
             if (src >= BASE_INDEX && dst >= BASE_INDEX) {
-                System.out.printf("Migrating row %d to %d ", src, dst);
-
                 migrateRow(src, dst);
             }
             else{

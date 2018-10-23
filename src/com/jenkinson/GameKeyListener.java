@@ -48,7 +48,8 @@ public class GameKeyListener implements KeyListener {
                 break;
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                activePiece.translate(-1, 0);
+                //activePiece.translate(-1, 0);
+                activePiece.rotate(true);
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
