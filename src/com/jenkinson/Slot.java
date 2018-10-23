@@ -16,17 +16,17 @@ class Slot {
 
     boolean solid = false;
 
-    Slot(int i, int j){
+    Slot(int i, int j) {
         this.i = i;
         this.j = j;
     }
 
-    void fill(Color color){
+    void fill(Color color) {
         this.solid = true;
         this.color = color;
     }
 
-    void purge(){
+    void purge() {
         this.solid = false;
         this.color = voidColor;
     }

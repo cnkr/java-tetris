@@ -21,6 +21,7 @@ class Piece {
             this.i = i;
             this.j = j;
         }
+
     }
 
     PieceType kind;
@@ -34,7 +35,6 @@ class Piece {
         this.cx = cx;
         Random r = new Random();
         this.kind = PieceType.values()[r.nextInt(PieceType.values().length)];
-        //this.kind = PieceType.I;  //TODO Remove
 
         switch (this.kind) {
             case I:
@@ -73,10 +73,10 @@ class Piece {
                 this.color = Color.CYAN;
                 break;
             case T:
-                blocks[0] = new Block(2, 0);
-                blocks[1] = new Block(2, 1); //
-                blocks[2] = new Block(2, 2);
-                blocks[3] = new Block(3, 1);
+                blocks[0] = new Block(1, 0);
+                blocks[1] = new Block(2, 0); //
+                blocks[2] = new Block(3, 0);
+                blocks[3] = new Block(2, 1);
                 this.color = Color.ORANGE;
                 break;
             case Z:
@@ -96,30 +96,34 @@ class Piece {
 
     }
 
-    void translate(int iOffset, int jOffset) {
-
-        // First, check if target slots are available
-        boolean slotsAvailable = true;
-
-        // Empty current slots
+    void purgeBlocks() {
         for (Block b : blocks) {
             cx.grid[b.i][b.j].purge();
         }
+    }
+
+    void translate(int iOffset, int jOffset) {
+
+        // First, check if target slots are available
+        boolean badSlotDetected = false;
+
+        // Empty current slots
+        purgeBlocks();
 
         // Check new slots
         for (Block b : blocks) {
             try {
                 if (cx.grid[b.i + iOffset][b.j + jOffset].solid) {
-                    slotsAvailable = false;
+                    badSlotDetected = true;
                     break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                slotsAvailable = false;
+                badSlotDetected = true;
             }
         }
 
         // If problem detected, undo. Else, proceed.
-        if (!slotsAvailable) {
+        if (badSlotDetected) {
             for (Block b : blocks) {
                 cx.grid[b.i][b.j].fill(color);
             }
@@ -134,7 +138,7 @@ class Piece {
         }
     }
 
-    void rotate() {
+    private void rotateVolatile(boolean isRightRotate) {
 
         // Create 5x5 zero matrix
         Block[][] mat = new Block[5][5];
@@ -144,7 +148,7 @@ class Piece {
             }
         }
 
-        // Place block idx 1 to mat[2][2]
+        // Place block idx 1 to mat[2][2] and others relative to it
         for (Block b : blocks) {
             int iOffset = b.i - blocks[1].i;
             int jOffset = b.j - blocks[1].j;
@@ -152,8 +156,74 @@ class Piece {
         }
 
         // Rotating right is effectively Transpose + Vertical mirroring
+        // Rotating left is effectively Vertical mirroring + Transpose
 
+        if (isRightRotate) {
+            transpose(mat);
+            verticalFlip(mat);
+        } else {
+            verticalFlip(mat);
+            transpose(mat);
+        }
+
+        // Place back
+        Block b;
+        Block c = mat[2][2];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (mat[i][j] != null) {
+                    b = mat[i][j];
+                    b.i = c.i + (i - 2);
+                    b.j = c.j + (j - 2);
+                }
+            }
+        }
+    }
+
+    void rotate(boolean isRightRotate) {
+
+        // Check square piece exception
+        if (kind == PieceType.O)
+            return;
+
+        // First, check if target slots are available
+        boolean badSlotDetected = false;
+
+        purgeBlocks();
+
+        Block[] backup = new Block[4];
+        for (int k = 0; k < blocks.length; k++) {
+            backup[k] = new Block(blocks[k].i, blocks[k].j);
+        }
+
+        rotateVolatile(isRightRotate);
+
+        // Check new slots
+        for (Block b : blocks) {
+            try {
+                if (cx.grid[b.i][b.j].solid) {
+                    badSlotDetected = true;
+                    break;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                badSlotDetected = true;
+            }
+        }
+
+        // If problem detected, fall back to backup.
+        if (badSlotDetected) {
+            blocks = backup;
+        }
+
+        // Fill new (or backed up) blocks
+        for (Block b : blocks) {
+            cx.grid[b.i][b.j].fill(color);
+        }
+    }
+
+    private void transpose(Block[][] mat) {
         Block temp;
+
         // Transpose matrix
         for (int i = 0; i < 5; i++) {
             for (int j = i; j < 5; j++) {
@@ -162,8 +232,11 @@ class Piece {
                 mat[j][i] = temp;
             }
         }
+    }
 
-        // Flip matrix vertically
+    private void verticalFlip(Block[][] mat) {
+        Block temp;
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4 - j; j++) {
                 temp = mat[i][j];
@@ -171,22 +244,5 @@ class Piece {
                 mat[i][4 - j] = temp;
             }
         }
-
-        // Place back
-        Block b;
-        Block c = mat[2][2];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (mat[i][j] != null){
-                    b = mat[i][j];
-                    System.out.printf("B before (%d, %d)", b.i, b.j);
-                    b.i = c.i + (i - 2);
-                    b.j = c.j + (j - 2);
-                    System.out.printf("B after (%d, %d)", b.i, b.j);
-                }
-            }
-        }
-
-
     }
 }

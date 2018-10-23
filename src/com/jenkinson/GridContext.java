@@ -27,18 +27,18 @@ public class GridContext {
 
         grid = new Slot[N_ROWS][N_COLS];
 
-        for(int i = 0; i< N_ROWS; i++){
-            for(int j= 0; j < N_COLS; j++){
-                grid[i][j] = new Slot(i,j);
+        for (int i = 0; i < N_ROWS; i++) {
+            for (int j = 0; j < N_COLS; j++) {
+                grid[i][j] = new Slot(i, j);
             }
         }
 
         piece = new Piece(this);
     }
 
-    void clearGrid(){
-        for(Slot[] row : grid){
-            for(Slot slot : row){
+    void clearGrid() {
+        for (Slot[] row : grid) {
+            for (Slot slot : row) {
                 slot.purge();
             }
         }

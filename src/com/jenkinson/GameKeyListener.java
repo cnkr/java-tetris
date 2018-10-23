@@ -9,7 +9,7 @@ public class GameKeyListener implements KeyListener {
 
     GameScreen screen;
 
-    GameKeyListener(GameScreen screen){
+    GameKeyListener(GameScreen screen) {
         this.screen = screen;
     }
 
@@ -34,31 +34,32 @@ public class GameKeyListener implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyChar());
 
         Piece activePiece = screen.gameGridContext.piece;
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
-                activePiece.translate(0,-1);
+                activePiece.translate(0, -1);
                 break;
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
-                activePiece.translate(0,1);
+                activePiece.translate(0, 1);
                 break;
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                activePiece.translate(-1,0);
+                activePiece.translate(-1, 0);
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
-                activePiece.translate(1,0);
+                activePiece.translate(1, 0);
                 break;
             case KeyEvent.VK_ENTER:
                 activePiece = screen.updatePieces();
+                break;
             case KeyEvent.VK_SPACE:
-                activePiece.rotate();
+                activePiece.rotate(true);
+                break;
         }
 
         screen.repaint();

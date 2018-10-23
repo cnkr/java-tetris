@@ -12,8 +12,6 @@ abstract class Screen extends JPanel {
     final int DEFAULT_H = 600;
 
     Screen() {
-//        setPreferredSize(new Dimension(DEFAULT_W, DEFAULT_H));
-//        setBackground(Color.BLUE);
     }
 
 }
