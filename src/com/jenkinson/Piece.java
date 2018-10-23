@@ -2,7 +2,6 @@ package com.jenkinson;
 
 import java.util.Random;
 import java.awt.*;
-import java.util.Vector;
 
 class Piece {
     /**
@@ -39,49 +38,49 @@ class Piece {
         switch (this.kind) {
             case I:
                 blocks[0] = new Block(0, 0);
-                blocks[1] = new Block(1, 0); //
+                blocks[1] = new Block(1, 0); // Pivot
                 blocks[2] = new Block(2, 0);
                 blocks[3] = new Block(3, 0);
                 this.color = Color.BLUE;
                 break;
             case J:
                 blocks[0] = new Block(1, 1);
-                blocks[1] = new Block(2, 1); //
+                blocks[1] = new Block(2, 1); // Pivot
                 blocks[2] = new Block(3, 1);
                 blocks[3] = new Block(3, 0);
                 this.color = Color.PINK;
                 break;
             case L:
                 blocks[0] = new Block(1, 0);
-                blocks[1] = new Block(2, 0); //
+                blocks[1] = new Block(2, 0); // Pivot
                 blocks[2] = new Block(3, 0);
                 blocks[3] = new Block(3, 1);
                 this.color = Color.GREEN;
                 break;
             case O:
                 blocks[0] = new Block(2, 0);
-                blocks[1] = new Block(2, 1); //
+                blocks[1] = new Block(2, 1); // Pivot
                 blocks[2] = new Block(3, 1);
                 blocks[3] = new Block(3, 0);
                 this.color = Color.YELLOW;
                 break;
             case S:
                 blocks[0] = new Block(1, 0);
-                blocks[1] = new Block(2, 0); //
+                blocks[1] = new Block(2, 0); // Pivot
                 blocks[2] = new Block(2, 1);
                 blocks[3] = new Block(3, 1);
                 this.color = Color.CYAN;
                 break;
             case T:
                 blocks[0] = new Block(1, 0);
-                blocks[1] = new Block(2, 0); //
+                blocks[1] = new Block(2, 0); // Pivot
                 blocks[2] = new Block(3, 0);
                 blocks[3] = new Block(2, 1);
                 this.color = Color.ORANGE;
                 break;
             case Z:
                 blocks[0] = new Block(1, 1);
-                blocks[1] = new Block(2, 1); //
+                blocks[1] = new Block(2, 1); // Pivot
                 blocks[2] = new Block(2, 0);
                 blocks[3] = new Block(3, 0);
                 this.color = Color.RED;
@@ -96,19 +95,19 @@ class Piece {
 
     }
 
-    void purgeBlocks() {
+    private void purgeSelfBlocks() {
         for (Block b : blocks) {
             cx.grid[b.i][b.j].purge();
         }
     }
 
-    void translate(int iOffset, int jOffset) {
+    boolean translate(int iOffset, int jOffset) {
 
         // First, check if target slots are available
         boolean badSlotDetected = false;
 
         // Empty current slots
-        purgeBlocks();
+        purgeSelfBlocks();
 
         // Check new slots
         for (Block b : blocks) {
@@ -136,9 +135,12 @@ class Piece {
                 cx.grid[b.i][b.j].fill(color);
             }
         }
+
+        boolean success = !badSlotDetected;
+        return success;
     }
 
-    private void rotateVolatile(boolean isRightRotate) {
+    private void rotateHelper(boolean isRightRotate) {
 
         // Create 5x5 zero matrix
         Block[][] mat = new Block[5][5];
@@ -189,14 +191,14 @@ class Piece {
         // First, check if target slots are available
         boolean badSlotDetected = false;
 
-        purgeBlocks();
+        purgeSelfBlocks();
 
         Block[] backup = new Block[4];
         for (int k = 0; k < blocks.length; k++) {
             backup[k] = new Block(blocks[k].i, blocks[k].j);
         }
 
-        rotateVolatile(isRightRotate);
+        rotateHelper(isRightRotate);
 
         // Check new slots
         for (Block b : blocks) {

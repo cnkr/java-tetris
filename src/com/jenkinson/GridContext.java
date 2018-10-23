@@ -48,4 +48,12 @@ public class GridContext {
     void centerPiece(){
         piece.translate(0, N_COLS / 2 - 1);
     }
+
+    boolean advancePiece(){
+        return  piece.translate(1,0);
+    }
+
+    void checkClearance(){
+
+    }
 }

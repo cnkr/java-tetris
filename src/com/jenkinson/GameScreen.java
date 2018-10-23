@@ -10,7 +10,7 @@ class GameScreen extends Screen {
     private GridCanvas gameCanvas, cueCanvas;
     GridContext gameGridContext, cueGridContext;
 
-    Piece activePiece;
+    boolean quitRequested = false;
 
     GameScreen() {
 
@@ -36,5 +36,29 @@ class GameScreen extends Screen {
         gameGridContext.centerPiece();
 
         return gameGridContext.piece;
+    }
+
+    void runGameLoop(){
+        System.out.println("running");
+        long gamePeriod = 1000;
+
+        while(!quitRequested){
+
+            try {
+                Thread.sleep(gamePeriod);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("here");
+            boolean advanceSucceeded = gameGridContext.advancePiece();
+
+            if (!advanceSucceeded) {
+                updatePieces();
+            }
+
+            repaint();
+        }
+
+
     }
 }

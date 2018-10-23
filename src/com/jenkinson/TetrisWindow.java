@@ -26,6 +26,9 @@ public class TetrisWindow extends JFrame {
         // Shady part: Think how to handle Key listener.
         addKeyListener(new GameKeyListener((GameScreen)activeScreen));
         setVisible(true);
+
+        // Run game loop
+        ((GameScreen)activeScreen).runGameLoop();
     }
 
 

@@ -60,6 +60,9 @@ public class GameKeyListener implements KeyListener {
             case KeyEvent.VK_SPACE:
                 activePiece.rotate(true);
                 break;
+            case KeyEvent.VK_ESCAPE:
+                screen.quitRequested = true;
+                break;
         }
 
         screen.repaint();
