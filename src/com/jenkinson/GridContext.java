@@ -34,6 +34,7 @@ public class GridContext {
         }
 
         piece = new Piece(this);
+        centerPiece();
     }
 
     void clearGrid() {
@@ -42,5 +43,9 @@ public class GridContext {
                 slot.purge();
             }
         }
+    }
+
+    void centerPiece(){
+        piece.translate(0, N_COLS / 2 - 1);
     }
 }

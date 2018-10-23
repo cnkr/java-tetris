@@ -33,7 +33,7 @@ class GameScreen extends Screen {
         cueGridContext.piece = new Piece(cueGridContext);
 
         //Translate piece to center
-        gameGridContext.piece.translate(0, gameGridContext.N_COLS / 2 - 1);
+        gameGridContext.centerPiece();
 
         return gameGridContext.piece;
     }
