@@ -1,6 +1,8 @@
 package com.jenkinson;
 
 
+import javax.swing.*;
+
 class GameScreen extends Screen {
     /**
      * JPanel Representing the game screen. It has 3 canvas: game, cue, report.
@@ -11,14 +13,16 @@ class GameScreen extends Screen {
     GridContext gameGridContext, cueGridContext;
 
     boolean quitRequested = false;
+    boolean gameOver = false;
+
 
     GameScreen() {
 
         gameGridContext = new GridContext(this, 26, 10, 4, 40, 10);
         cueGridContext = new GridContext(this, 4, 2, 0, 40, 10);
 
-        gameCanvas = new GridCanvas(this, gameGridContext);
-        cueCanvas = new GridCanvas(this, cueGridContext);
+        gameCanvas = new GridCanvas(this, gameGridContext, GridCanvas.CanvasType.GAME);
+        cueCanvas = new GridCanvas(this, cueGridContext, GridCanvas.CanvasType.CUE);
 
         add(gameCanvas);
         add(cueCanvas);
@@ -32,28 +36,30 @@ class GameScreen extends Screen {
         cueGridContext.clearGrid();
         cueGridContext.piece = new Piece(cueGridContext);
 
-        //Translate piece to center
-        gameGridContext.centerPiece();
+        //Translate piece to center. If failure, it means game over.
+        gameOver = !gameGridContext.movePieceToCenter();
 
         return gameGridContext.piece;
     }
 
-    void runGameLoop(){
-        System.out.println("running");
-        long gamePeriod = 1000;
+    void runGameLoop() {
 
-        while(!quitRequested){
+        long advancePeriod = 1000; //ms
+
+        while (!quitRequested && !gameOver) {
 
             try {
-                Thread.sleep(gamePeriod);
+                Thread.sleep(advancePeriod);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("here");
-            boolean advanceSucceeded = gameGridContext.advancePiece();
 
-            if (!advanceSucceeded) {
-                updatePieces();
+            boolean advanceAttempt = gameGridContext.advancePiece();
+
+            if (!advanceAttempt) {
+                gameGridContext.clearCompletedRows();
+                gameGridContext.fillOpenedGaps();
+                updatePieces(); // must update after clear & fill.
             }
 
             repaint();

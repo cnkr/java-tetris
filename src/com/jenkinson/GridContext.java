@@ -7,6 +7,8 @@ public class GridContext {
     final int N_ROWS; //26
     final int N_COLS; //10
     final int HIDDEN_ROWS; //4
+    final int VISIBLE_COUNT;
+    final int BASE_INDEX;
     final int SCALE; //40
     private final int GAP; //10
     final int STEP;
@@ -20,7 +22,11 @@ public class GridContext {
 
         N_ROWS = nRows;
         N_COLS = nCols;
+
         HIDDEN_ROWS = hiddenRows;
+        VISIBLE_COUNT = N_ROWS - HIDDEN_ROWS;
+        BASE_INDEX = HIDDEN_ROWS;
+
         SCALE = scale;
         GAP = SCALE / scaleGapRatio;
         STEP = SCALE + GAP;
@@ -34,7 +40,7 @@ public class GridContext {
         }
 
         piece = new Piece(this);
-        centerPiece();
+        movePieceToCenter();
     }
 
     void clearGrid() {
@@ -45,15 +51,81 @@ public class GridContext {
         }
     }
 
-    void centerPiece(){
-        piece.translate(0, N_COLS / 2 - 1);
+    boolean movePieceToCenter() {
+        boolean success = piece.translate(1, N_COLS / 2 - 1); // also move 1 slot down
+        return success;
     }
 
-    boolean advancePiece(){
-        return  piece.translate(1,0);
+    boolean advancePiece() {
+        return piece.translate(1, 0);
     }
 
-    void checkClearance(){
+    private boolean testRowEmpty(int i) {
+        for (Slot slot : grid[i])
+            if (slot.solid)
+                return false;
+        return true;
+    }
 
+    private boolean testRowComplete(int i) {
+        for (Slot slot : grid[i])
+            if (!slot.solid)
+                return false;
+        return true;
+    }
+
+    private void clearRow(int i) {
+        for (Slot slot : grid[i]) {
+            slot.purge();
+        }
+    }
+
+    void clearCompletedRows() {
+        for (int i = BASE_INDEX; i < N_ROWS; i++) {
+            if (testRowComplete(i)) {
+                clearRow(i);
+            }
+        }
+    }
+
+    void fillOpenedGaps() {
+
+        int src;
+        int dst = N_ROWS - 1;
+
+        while (dst > BASE_INDEX) {
+            //Stay in loop if dst is not empty. find the first empty line
+            while (dst >= BASE_INDEX && testRowEmpty(dst) == false) {
+                dst--;
+            }
+
+            src = dst;
+
+            // Stay in loop if src is empty. find the first non-empty line above dst
+            while (src >= BASE_INDEX && testRowEmpty(src) == true) {
+                src--;
+            }
+
+            if (src >= BASE_INDEX && dst >= BASE_INDEX) {
+                System.out.printf("Migrating row %d to %d ", src, dst);
+
+                migrateRow(src, dst);
+            }
+            else{
+                break;
+            }
+
+            dst--;
+        }
+
+    }
+
+    void migrateRow(int iSrc, int iDst) {
+        for (int j = 0; j < grid[iSrc].length; j++) {
+            if (grid[iSrc][j].solid) {
+                grid[iDst][j].fill(grid[iSrc][j].color);
+                grid[iSrc][j].purge();
+            }
+        }
     }
 }

@@ -8,12 +8,19 @@ class GridCanvas extends JPanel {
      * JPanel Representing the game canvas
      */
 
+    enum CanvasType {
+        GAME, CUE
+    }
+
+    CanvasType canvasType;
+
     GameScreen screen;
     GridContext gridContext;
 
-    GridCanvas(GameScreen screen, GridContext gridContext) {
+    GridCanvas(GameScreen screen, GridContext gridContext, CanvasType canvasType) {
         this.screen = screen;
         this.gridContext = gridContext;
+        this.canvasType = canvasType;
 
         GridContext c = this.gridContext;
         int width = c.STEP * c.N_COLS;
@@ -41,6 +48,12 @@ class GridCanvas extends JPanel {
                     g.drawRect(j * cx.STEP, (i - cx.HIDDEN_ROWS) * cx.STEP, cx.SCALE, cx.SCALE);
                 }
             }
+        }
+
+        if (canvasType == CanvasType.GAME && screen.gameOver) {
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("TimesRoman", Font.BOLD, 50));
+            g.drawString("GAME OVER", 100, getHeight() / 2);
         }
     }
 }
