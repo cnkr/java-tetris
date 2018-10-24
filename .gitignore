@@ -7,6 +7,9 @@
 
 # CS - IGNORE INTELLIJ IML FILE
 *.iml
+
+# CS - IGNORE MANIFEST FOLDER
+src/META-INF
 #--------------------------------
 
 # User-specific stuff

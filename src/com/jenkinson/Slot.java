@@ -11,7 +11,7 @@ class Slot {
     final int i;
     final int j;
 
-    private static Color voidColor = Color.LIGHT_GRAY;
+    private static Color voidColor = new Color(125, 113, 105);
     Color color = voidColor;
 
     boolean solid = false;

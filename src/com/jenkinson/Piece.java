@@ -41,49 +41,49 @@ class Piece {
                 blocks[1] = new Block(1, 0); // Pivot
                 blocks[2] = new Block(2, 0);
                 blocks[3] = new Block(3, 0);
-                this.color = Color.BLUE;
+                this.color = new Color(74, 120, 192);
                 break;
             case J:
                 blocks[0] = new Block(1, 1);
                 blocks[1] = new Block(2, 1); // Pivot
                 blocks[2] = new Block(3, 1);
                 blocks[3] = new Block(3, 0);
-                this.color = Color.PINK;
+                this.color = new Color(75, 182, 114);
                 break;
             case L:
                 blocks[0] = new Block(1, 0);
                 blocks[1] = new Block(2, 0); // Pivot
                 blocks[2] = new Block(3, 0);
                 blocks[3] = new Block(3, 1);
-                this.color = Color.GREEN;
+                this.color = new Color(183, 102, 175);
                 break;
             case O:
                 blocks[0] = new Block(2, 0);
                 blocks[1] = new Block(2, 1); // Pivot
                 blocks[2] = new Block(3, 1);
                 blocks[3] = new Block(3, 0);
-                this.color = Color.YELLOW;
+                this.color = new Color(230, 215, 48);
                 break;
             case S:
                 blocks[0] = new Block(1, 0);
                 blocks[1] = new Block(2, 0); // Pivot
                 blocks[2] = new Block(2, 1);
                 blocks[3] = new Block(3, 1);
-                this.color = Color.CYAN;
+                this.color = new Color(90, 200, 203);
                 break;
             case T:
                 blocks[0] = new Block(1, 0);
                 blocks[1] = new Block(2, 0); // Pivot
                 blocks[2] = new Block(3, 0);
                 blocks[3] = new Block(2, 1);
-                this.color = Color.ORANGE;
+                this.color = new Color(230, 151, 74);
                 break;
             case Z:
                 blocks[0] = new Block(1, 1);
                 blocks[1] = new Block(2, 1); // Pivot
                 blocks[2] = new Block(2, 0);
                 blocks[3] = new Block(3, 0);
-                this.color = Color.RED;
+                this.color = new Color(0xAA, 0x39, 0x39);
                 break;
 
         }

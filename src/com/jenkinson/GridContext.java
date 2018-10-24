@@ -1,5 +1,8 @@
 package com.jenkinson;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class GridContext {
 
     GameScreen screen;
@@ -80,12 +83,46 @@ public class GridContext {
         }
     }
 
-    void clearCompletedRows() {
+    void clearCompletedRowsOld() {
         for (int i = BASE_INDEX; i < N_ROWS; i++) {
             if (testRowComplete(i)) {
                 clearRow(i);
             }
         }
+    }
+
+    void clearCompletedRows() {
+        ArrayList<Integer> fullRows = new ArrayList<Integer>();
+
+        // Detect rows to be cleared
+        for (int i = BASE_INDEX; i < N_ROWS; i++) {
+            if (testRowComplete(i)) {
+                fullRows.add(i);
+            }
+        }
+
+        for (int j = 0; j < 4; j++) {
+            for (Integer i : fullRows) {
+                for (Slot slot : grid[i]) {
+                    if (j % 2 == 0) {
+                        slot.color = Color.BLACK;
+                    } else {
+                        slot.color = Color.WHITE;
+                    }
+                }
+            }
+
+            screen.repaint();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        clearCompletedRowsOld();
+
     }
 
     void fillOpenedGaps() {
@@ -108,8 +145,7 @@ public class GridContext {
 
             if (src >= BASE_INDEX && dst >= BASE_INDEX) {
                 migrateRow(src, dst);
-            }
-            else{
+            } else {
                 break;
             }
 
