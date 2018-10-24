@@ -29,6 +29,8 @@ class Piece {
 
     GridContext cx;
 
+    boolean moveAllowed = true;
+
     Piece(GridContext cx) {
 
         this.cx = cx;
@@ -102,6 +104,8 @@ class Piece {
     }
 
     boolean translate(int iOffset, int jOffset) {
+        if (!moveAllowed)
+            return false;
 
         // First, check if target slots are available
         boolean badSlotDetected = false;
@@ -182,11 +186,13 @@ class Piece {
         }
     }
 
-    void rotate(boolean isRightRotate) {
+    boolean rotate(boolean isRightRotate) {
+        if (!moveAllowed)
+            return false;
 
         // Check square piece exception
         if (kind == PieceType.O)
-            return;
+            return false;
 
         // First, check if target slots are available
         boolean badSlotDetected = false;
@@ -221,6 +227,8 @@ class Piece {
         for (Block b : blocks) {
             cx.grid[b.i][b.j].fill(color);
         }
+
+        return !badSlotDetected;
     }
 
     private void transpose(Block[][] mat) {

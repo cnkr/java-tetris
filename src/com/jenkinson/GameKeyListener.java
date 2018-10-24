@@ -53,10 +53,10 @@ public class GameKeyListener implements KeyListener {
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
-                activePiece.translate(1, 0);
+                activePiece.moveAllowed = activePiece.translate(1, 0); // lock piece if needed
                 break;
             case KeyEvent.VK_ENTER:
-                activePiece = screen.updatePieces();
+                //activePiece = screen.updatePieces();
                 break;
             case KeyEvent.VK_SPACE:
                 activePiece.rotate(true);

@@ -1,7 +1,6 @@
 package com.jenkinson;
 
 
-import javax.swing.*;
 import java.awt.*;
 
 class GameScreen extends Screen {
@@ -28,7 +27,7 @@ class GameScreen extends Screen {
         add(gameCanvas);
         add(cueCanvas);
 
-        this.setBackground(new Color(0,0,0));
+        this.setBackground(new Color(0, 0, 0));
     }
 
     Piece updatePieces() {
