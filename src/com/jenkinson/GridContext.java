@@ -101,6 +101,8 @@ public class GridContext {
             }
         }
 
+        // Blink row 4 times before clearing
+
         for (int j = 0; j < 4; j++) {
             for (Integer i : fullRows) {
                 for (Slot slot : grid[i]) {
@@ -113,6 +115,7 @@ public class GridContext {
             }
 
             screen.repaint();
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
